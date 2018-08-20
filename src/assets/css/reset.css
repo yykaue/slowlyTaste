@@ -1,0 +1,67 @@
+.clear {
+  clear: both;
+}
+
+.ivu-menu-item-group-title {
+  height: 10px;
+  line-height: 10px;
+}
+
+.ivu-input-group-append .ivu-btn-primary {
+  background-color: #2d8cf0;
+  border-color: #2d8cf0;
+}
+
+.ivu-input-group-append .ivu-btn-primary span {
+  color: #ffffff;
+}
+
+.ivu-icon-ios-search {
+  color: #ffffff;
+}
+
+ul {
+  list-style: none;
+}
+
+.ivu-input {
+  background-color: rgba(225, 225, 225, 0) !important;
+  border: 1px #e9eaec solid;
+  height: 40px;
+  font-size: 18px;
+  outline: 0;
+  border-radius: 6px;
+}
+
+.landing .ivu-input{
+  margin: 30px auto 0;
+}
+
+.ivu-table-cell{
+  padding: 20px 10px;
+}
+
+.ivu-input-group-prepend{
+  width: 81px !important;
+  text-align: right;
+}
+
+.teacherIdShow{
+  background-color: #ffffff;
+}
+
+a {
+  user-select: none;
+}
+
+.oh {
+  overflow: hidden;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
