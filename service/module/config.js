@@ -1,6 +1,5 @@
 var app = {
-  dbUrl: 'mongodb://liuyi:54054331@101.200.56.100:27017/consoleData',
-  // dbUrl: 'mongodb://127.0.0.1:27017',
+  dbUrl: 'mongodb://127.0.0.1:27017',
   dbName: 'consoleData',
   opts: {
     auth: {

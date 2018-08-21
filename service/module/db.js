@@ -76,7 +76,12 @@ class Db {
     return new Promise(
       (resolve, reject) => {
         this.connect().then((db) => {
-          let result = db.collection(collectionName).find(filter)
+          let result = db.collection(
+            collectionName
+          ).find(
+            filter
+          )
+
           result.toArray(function (err, docs) {
             if (err) {
               reject(err)
@@ -96,7 +101,13 @@ class Db {
     return new Promise(
       (resolve, reject) => {
         this.connect().then((db) => {
-          let result = db.collection(collectionName).find(filter).count(true)
+          let result = db.collection(
+            collectionName
+          ).find(
+            filter
+          ).count(
+            true
+          )
           resolve(result)
         })
       }
@@ -122,7 +133,7 @@ class Db {
             pagination
           )
 
-          search.toArray(function (err, result) {
+          search.toArray((err, result) => {
             if (err) {
               reject(err)
             } else {
@@ -141,7 +152,9 @@ class Db {
     return new Promise(
       (resolve, reject) => {
         this.connect().then((db) => {
-          db.collection(collectionName).updateOne(
+          db.collection(
+            collectionName
+          ).updateOne(
             json1,
             {
               $addToSet: json2
@@ -166,15 +179,21 @@ class Db {
     return new Promise(
       (resolve, reject) => {
         this.connect().then((db) => {
-          db.collection(collectionName).updateOne(json1, {
-            $set: json2
-          }, (err, result) => {
-            if (err) {
-              reject(err)
-            } else {
-              resolve(result)
+          db.collection(
+            collectionName
+          ).updateOne(
+            json1,
+            {
+              $set: json2
+            },
+            (err, result) => {
+              if (err) {
+                reject(err)
+              } else {
+                resolve(result)
+              }
             }
-          })
+          )
         })
       }
     )
@@ -187,7 +206,9 @@ class Db {
     return new Promise(
       (resolve, reject) => {
         this.connect().then((db) => {
-          db.collection(collectionName).removeOne(
+          db.collection(
+            collectionName
+          ).removeOne(
             json,
             function (err, result) {
               if (err) {

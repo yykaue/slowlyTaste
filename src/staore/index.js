@@ -1,27 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import landing from './modules/landing/landing'
-import navigation from './modules/index/navigation'
-import withClients from './modules/withClients/withClients'
+import state from './modules/state.js'
+import mutations from './modules/mutations.js'
+import actions from './modules/actions.js'
+import getters from './modules/getters.js'
+
+import landing from './modules/landing'
+import navigation from './modules/index'
+import withClients from './modules/withClients'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {
-    imgUrl: ''
-  },
-  mutations: {
-    //
-  },
-  actions: {
-
-  },
-  getters: {
-    imgUrl (state) {
-      return state.imgUrl
-    }
-  },
+  state,
+  mutations,
+  actions,
+  getters,
   modules: {
     landing,
     navigation,

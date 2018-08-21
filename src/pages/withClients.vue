@@ -1,39 +1,7 @@
 <template>
   <div id="withClients">
-    <div class="ClientsSearch">
-      <Input
-        search
-        size="large"
-        class="search"
-        v-model="searchValue.input"
-        @on-enter="searchClientsInformation"
-      >
-        <Select
-          v-model="searchValue.select"
-          slot="prepend"
-          style="width: 80px"
-        >
-          <Option
-            v-for="(value, key) in searchValue.selectOption"
-            :key="key"
-            :value="key"
-          >{{value}}</Option>
-        </Select>
-        <Button
-          slot="append"
-          icon="ios-search"
-          type="primary"
-          @click="searchClientsInformation()"
-        >搜索</Button>
-      </Input>
-      <Button
-        size="large"
-        class="button"
-        type="success"
-        @click="editClientsWindowOn()"
-      >添加客户</Button>
-      <div style="clear: both;"></div>
-    </div>
+    <!-- 信息检索 -->
+    <ClientsSearch/>
 
     <!-- 信息列表 -->
     <div class="tableBox">
@@ -42,6 +10,7 @@
         class="table"
         :columns="columns"
         :data="clientsData"
+        :loading="tableLoading"
       ></Table>
     </div>
 
@@ -52,32 +21,33 @@
         :page-size="paging.pagination"
         @on-page-size-change="setPagination"
         @on-change="getWithClients"
-        page-size-opts
+        show-sizer
         show-total
       ></Page>
     </div>
 
     <!-- 添加/编辑客户信息 -->
-    <EditModal v-show="ClientsEditData.editModal"></EditModal>
+    <EditModal v-show="ClientsEditData.editModal"/>
 
     <!-- 查看所有回访 -->
     <Modal
-        v-model="callback.show"
+        v-model="callbackShow"
         :title="callback.user + ' 的回访记录'"
         @on-cancel="removeCallbackCancel">
         <p
+          style="padding: 6px 18px;"
           v-for="value in callback.content"
           :key="value.time"
-          v-text="value.content"
+          v-text="value.details"
         ></p>
     </Modal>
 
     <!-- 添加回访信息 -->
     <Modal
-        v-model="callback.addShow"
+        v-model="callbackAddShow"
         title="添加回访信息"
         @on-ok="callbackAddArr"
-        @on-cancel="callbackAddShow">
+        @on-cancel="setCallbackAddShow">
         <Input
           v-model="callback.text"
           placeholder="请输入回访信息"
@@ -102,9 +72,48 @@
 import moment from 'moment'
 import { mapGetters, mapActions } from 'vuex'
 import EditModal from './../components/ownComponent/withClients/editModal'
+import ClientsSearch from './../components/ownComponent/withClients/ClientsSearch'
 
 export default {
   name: 'withClients',
+  components: {
+    EditModal,
+    ClientsSearch
+  },
+  computed: {
+    ...mapGetters([
+      'clientsData',
+      'ClientsEditData',
+      'clientsDataTotal',
+      'paging',
+      'callback',
+      'tableLoading',
+      'callbackShow',
+      'callbackAddShow'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'getWithClients',
+      'addWithClients',
+      'editWithClients',
+      'amendWithClients',
+      'removeWithClients',
+      'removeClientsWindowOn',
+      'editClientsWindowOn',
+      'removeClientsWindowOff',
+      'setPagination',
+      'callbackCancel',
+      'setCallbackCancel',
+      'removeCallbackCancel',
+      'callbackAddArr',
+      'setCallbackAddShow',
+      'openCallbackAddShow'
+    ])
+  },
+  mounted () {
+    this.getWithClients()
+  },
   data () {
     return {
       columns: [
@@ -262,10 +271,10 @@ export default {
                       on: {
                         click: () => {
                           let data = {
-                            id: params.row.id,
+                            id: params.row._id,
                             key: 'callback'
                           }
-                          this.callbackAddShow(data)
+                          this.openCallbackAddShow(data)
                         }
                       }
                     }, '追加回访')
@@ -333,46 +342,11 @@ export default {
                   }
                 }
               }, '删除')
-            ]);
+            ])
           }
         }
       ]
     }
-  },
-  components: {
-    EditModal
-  },
-  computed: {
-    ...mapGetters([
-      'clientsData',
-      'searchValue',
-      'ClientsEditData',
-      'clientsDataTotal',
-      'paging',
-      'callback'
-    ])
-  },
-  methods: {
-    ...mapActions([
-      'getWithClients',
-      'addWithClients',
-      'editWithClients',
-      'amendWithClients',
-      'removeWithClients',
-      'removeClientsWindowOn',
-      'removeClientsWindowOff',
-      'editClientsWindowOn',
-      'searchClientsInformation',
-      'setPagination',
-      'callbackCancel',
-      'setCallbackCancel',
-      'removeCallbackCancel',
-      'callbackAddArr',
-      'callbackAddShow'
-    ])
-  },
-  mounted () {
-    this.getWithClients()
   }
 }
 </script>
@@ -380,19 +354,6 @@ export default {
 <style lang="less" scoped>
 #withClients {
   padding-bottom: 60px;
-  .ClientsSearch {
-    position: relative;
-    z-index: 9;
-    padding: 30px 40px 20px;
-    .search {
-      float: left;
-      width: 50%;
-    }
-    .button {
-      float: right;
-      margin-left: 49px;
-    }
-  }
   .tableBox {
     width: 98%;
     margin: 0 auto;

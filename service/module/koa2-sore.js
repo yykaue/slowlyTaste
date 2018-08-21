@@ -1,3 +1,4 @@
+
 // 我们可以用下面的中间件理解app.use(cors({}))
 app.use(async (ctx, next) => {
   // 允许来自所有域名请求
